@@ -35,11 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
 /* <-------------- add Event Listener for Sucessful form Submission Message ----------------> */    
     const selectForm = document.querySelector("form");
-    //console.log("selectForm", selectForm);
-    const submitButton = selectForm.querySelector("#submitButton");
-    //console.log("submitButton", submitButton);
-    submitButton.addEventListener("click", () => {
-        alert("Submission Successful! Thank you!😊");
+
+    selectForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("You're submission has been received!");        
     })
 
 /* <------------ Setting Active Class on Scrolling though the sections ---------------> */
