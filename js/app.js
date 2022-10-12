@@ -1,29 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
-//    console.log('DOM has been fully loaded')
+/* <----------- Creating an Li on the NavBar & Appending it -----------------> */     
+    const createNavBar = () => {
     const selectNav = document.querySelector("#navbar__list");
-    //console.log("selectNav", selectNav);
     const createList = document.createElement("li");
-    //console.log("createList", createList);
     createList.setAttribute("class", "menu__link");
-    //console.log("createList", createList);
-/* <----------- Creating an Li on the NavBar -----------------> */   
-
-    const createNavAnchor = document.createElement("a");
-    //console.log("createNavAnchor", createNavAnchor);
-    createNavAnchor.setAttribute("href", "#section4");
-    //console.log("createNavAnchor", createNavAnchor);
-    const selectNavText = document.querySelector("h2");
-    //console.log("selectNavText", selectNavText);
-    createList.textContent = selectNavText.textContent;
-    createNavAnchor.innerHTML = selectNavText.textContent;
-    //console.log("createNavAnchor", createNavAnchor);
-/* <----------- Creating an <a> with the HTML text from H2 title section --------------> */
-
-    createList.innerHTML = createNavAnchor.outerHTML;
-    //console.log("createList", createList);
-/* <------------- Setting Li Content = <a> with HTML text from h2 title section ---------> */
-
+    
     selectNav.appendChild(createList);
-/* <------------- Appending <li> to the <nav> NavBar ---------------> */
+    return createList;
+    }
+
+/* <-------------- Extracting HTML H2 text to Create an Array ----------------> */
+    const selectingTitles = document.querySelectorAll("h2");
+    const createTitleArray = Array.from(selectingTitles, (element) => element.textContent);
+
+/* ----------> select #section, create an array with it & looping to add # for scroll -----> */
+    const selectIds = document.querySelectorAll("section");
+    const createIdArray = Array.from(selectIds, (id) => id.id);
+    for (let i = 0; i < createIdArray.length; i++) {
+        createIdArray[i] = "#" + createIdArray[i];    
+    }
+
+/* <---- Creating an <a> with the HTML text from H2 title section & Adding it to NavBar ------> */
+    createTitleArray.forEach( (title, index) => {
+        const id = createIdArray[index];
+
+        const createList = createNavBar ();
+        
+        const createNavAnchor = document.createElement("a");
+        createNavAnchor.href = id;
+        createNavAnchor.innerHTML = title;
+        createList.append(createNavAnchor);
+    })
+
+    
+/* <-------------- add Event Listener for Sucessful form Submission Message ----------------> */    
+    const selectForm = document.querySelector("form");
+    //console.log("selectForm", selectForm);
+    const submitButton = selectForm.querySelector("#submitButton");
+    //console.log("submitButton", submitButton);
+    submitButton.addEventListener("click", () => {
+        alert("Submission Successful! Thank you!😊");
+    })
+
+/* <------------ Setting Active Class on Scrolling though the sections ---------------> */
+    window.addEventListener("scroll", () => {
+        selectIds.forEach( section => {
+        const distanceViewport = section.getBoundingClientRect().top;
+        if (distanceViewport > 0 && distanceViewport < 100) {
+            section.classList.add('your-active-class');
+        } else {
+            section.classList.remove('your-active-class');
+        }
+        });
+    });
+
+/*---------------- functions to activate smooth scroll from Nav to Section ----------------> */
+
+    const menuLinks = document.querySelectorAll(".navbar__menu a");
+    
+    function distanceTopViewport (element) {
+        const url = element.getAttribute("href");
+        return document.querySelector(url).offsetTop;
+    }
+
+    function scrollingBehaviour (distanceFromTop) {
+        window.scroll({
+            top: distanceFromTop,
+            behavior: "smooth",
+        })
+    }
+
+    function scrollToSection(event) {
+        event.preventDefault();
+        const distanceFromTheTop = distanceTopViewport(event.target);
+        scrollingBehaviour(distanceFromTheTop);
+    }
+
+    menuLinks.forEach((link) => {
+        link.addEventListener("click", scrollToSection)
+    })
+
 
 })
