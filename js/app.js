@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectIds = document.querySelectorAll("section");
     const createIdArray = Array.from(selectIds, (id) => id.id);
     for (let i = 0; i < createIdArray.length; i++) {
-        createIdArray[i] = "#" + createIdArray[i];    
+        createIdArray[i] = "#" + createIdArray[i];  
     }
 
 /* <---- Creating an <a> with the HTML text from H2 title section & Adding it to NavBar ------> */
@@ -44,14 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
 /* <------------ Setting Active Class on Scrolling though the sections ---------------> */
     window.addEventListener("scroll", () => {
         selectIds.forEach( section => {
-        const distanceViewport = section.getBoundingClientRect().top;
-        if (distanceViewport > 0 && distanceViewport < 100) {
-            section.classList.add('your-active-class');
-        } else {
-            section.classList.remove('your-active-class');
-        }
+            const distanceViewport = section.getBoundingClientRect().top;
+            
+            const myListItem = document.querySelector(`a[href="#${section.id}"]`);
+
+            if (distanceViewport > 0 && distanceViewport < 100) {
+                section.classList.add('your-active-class');
+
+                myListItem.style.backgroundColor = "red";
+            } else {
+                section.classList.remove('your-active-class');
+                myListItem.style.backgroundColor = "white";
+            }
+            });
         });
-    });
 
 /*---------------- functions to activate smooth scroll from Nav to Section ----------------> */
 
